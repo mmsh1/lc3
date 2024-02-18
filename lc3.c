@@ -49,6 +49,113 @@ struct lc3 {
 	int running;
 };
 
+typedef void (*op_handler)(struct lc3 *);
+
+typedef struct {
+	int idx;
+	op_handler func;
+} instruction;
+
+static void
+op_br(struct lc3 *lc3)
+{
+}
+
+static void
+op_add(struct lc3 *lc3)
+{
+}
+
+static void
+op_ld(struct lc3 *lc3)
+{
+}
+
+static void
+op_st(struct lc3 *lc3)
+{
+}
+
+static void
+op_jsr(struct lc3 *lc3)
+{
+}
+
+static void
+op_and(struct lc3 *lc3)
+{
+}
+
+static void
+op_ldr(struct lc3 *lc3)
+{
+}
+
+static void
+op_str(struct lc3 *lc3)
+{
+}
+
+static void
+op_rti(struct lc3 *lc3)
+{
+}
+
+static void
+op_not(struct lc3 *lc3)
+{
+}
+
+static void
+op_ldi(struct lc3 *lc3)
+{
+}
+
+static void
+op_sti(struct lc3 *lc3)
+{
+}
+
+static void
+op_jmp(struct lc3 *lc3)
+{
+}
+
+static void
+op_res(struct lc3 *lc3)
+{
+}
+
+static void
+op_lea(struct lc3 *lc3)
+{
+}
+
+static void
+op_trap(struct lc3 *lc3)
+{
+}
+
+static instruction
+optable[0x10] = {
+	{ .idx = OP_BR, .func = op_br },
+	{ .idx = OP_ADD, .func = op_add },
+	{ .idx = OP_LD, .func = op_ld },
+	{ .idx = OP_ST, .func = op_st },
+	{ .idx = OP_JSR, .func = op_jsr },
+	{ .idx = OP_AND, .func = op_and },
+	{ .idx = OP_LDR, .func = op_ldr },
+	{ .idx = OP_STR, .func = op_str },
+	{ .idx = OP_RTI, .func = op_rti },
+	{ .idx = OP_NOT, .func = op_not },
+	{ .idx = OP_LDI, .func = op_ldi },
+	{ .idx = OP_STI, .func = op_sti },
+	{ .idx = OP_JMP, .func = op_jmp },
+	{ .idx = OP_RES, .func = op_res },
+	{ .idx = OP_LEA, .func = op_lea },
+	{ .idx = OP_TRAP, .func = op_trap }
+};
+
 static void
 memwrite(struct lc3 *lc3, uint16_t addr, uint16_t val)
 {
@@ -94,6 +201,22 @@ main(int argc, char **argv)
 		uint16_t op = instr >> 12;
 
 		switch (op) {
+		case OP_BR:   break;
+		case OP_ADD:  break;
+		case OP_LD:   break;
+		case OP_ST:   break;
+		case OP_JSR:  break;
+		case OP_AND:  break;
+		case OP_LDR:  break;
+		case OP_STR:  break;
+		case OP_RTI:  break;
+		case OP_NOT:  break;
+		case OP_LDI:  break;
+		case OP_STI:  break;
+		case OP_JMP:  break;
+		case OP_RES:  break;
+		case OP_LEA:  break;
+		case OP_TRAP: break;
 		}
 	}
 
