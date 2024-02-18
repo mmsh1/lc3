@@ -49,92 +49,34 @@ struct lc3 {
 	int running;
 };
 
-typedef void (*op_handler)(struct lc3 *);
+typedef void (*op_handler)(struct lc3 *, uint16_t);
 
 typedef struct {
 	int idx;
 	op_handler func;
 } instruction;
 
-static void
-op_br(struct lc3 *lc3)
-{
-}
+static uint16_t extract_dr(uint16_t);
+static uint16_t extract_sr1(uint16_t);
+static uint16_t extract_sr2(uint16_t);
+static int is_imm_mode(uint16_t);
 
-static void
-op_add(struct lc3 *lc3)
-{
-}
-
-static void
-op_ld(struct lc3 *lc3)
-{
-}
-
-static void
-op_st(struct lc3 *lc3)
-{
-}
-
-static void
-op_jsr(struct lc3 *lc3)
-{
-}
-
-static void
-op_and(struct lc3 *lc3)
-{
-}
-
-static void
-op_ldr(struct lc3 *lc3)
-{
-}
-
-static void
-op_str(struct lc3 *lc3)
-{
-}
-
-static void
-op_rti(struct lc3 *lc3)
-{
-}
-
-static void
-op_not(struct lc3 *lc3)
-{
-}
-
-static void
-op_ldi(struct lc3 *lc3)
-{
-}
-
-static void
-op_sti(struct lc3 *lc3)
-{
-}
-
-static void
-op_jmp(struct lc3 *lc3)
-{
-}
-
-static void
-op_res(struct lc3 *lc3)
-{
-}
-
-static void
-op_lea(struct lc3 *lc3)
-{
-}
-
-static void
-op_trap(struct lc3 *lc3)
-{
-}
+static void op_br(struct lc3 *, uint16_t);
+static void op_add(struct lc3 *, uint16_t);
+static void op_ld(struct lc3 *, uint16_t);
+static void op_st(struct lc3 *, uint16_t);
+static void op_jsr(struct lc3 *, uint16_t);
+static void op_and(struct lc3 *, uint16_t);
+static void op_ldr(struct lc3 *, uint16_t);
+static void op_str(struct lc3 *, uint16_t);
+static void op_rti(struct lc3 *, uint16_t);
+static void op_not(struct lc3 *, uint16_t);
+static void op_ldi(struct lc3 *, uint16_t);
+static void op_sti(struct lc3 *, uint16_t);
+static void op_jmp(struct lc3 *, uint16_t);
+static void op_res(struct lc3 *, uint16_t);
+static void op_lea(struct lc3 *, uint16_t);
+static void op_trap(struct lc3 *, uint16_t);
 
 static instruction
 optable[0x10] = {
@@ -155,6 +97,117 @@ optable[0x10] = {
 	{ .idx = OP_LEA, .func = op_lea },
 	{ .idx = OP_TRAP, .func = op_trap }
 };
+
+static uint16_t
+extract_dr(uint16_t instr)
+{
+	return (instr >> 9) & 0x7; /* mask 3 bits */
+}
+
+static uint16_t
+extract_sr1(uint16_t instr)
+{
+	return (instr >> 6) & 0x7; /* mask 3 bits */
+}
+
+static uint16_t
+extract_sr2(uint16_t instr)
+{
+	return instr & 0x7; /* mask 3 bits */
+}
+
+static int
+is_imm_mode(uint16_t instr)
+{
+	return (instr >> 5) & 0x1; /* mask 1 bit */
+}
+
+static void
+op_br(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_add(struct lc3 *lc3, uint16_t instr)
+{
+	uint16_t dr = extract_dr(instr);
+	uint16_t sr1 = extract_sr1(instr);
+	int imm_mode = is_imm_mode(instr);
+
+	if (imm_mode) {
+	} else {
+	}
+}
+
+static void
+op_ld(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_st(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_jsr(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_and(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_ldr(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_str(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_rti(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_not(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_ldi(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_sti(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_jmp(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_res(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_lea(struct lc3 *lc3, uint16_t instr)
+{
+}
+
+static void
+op_trap(struct lc3 *lc3, uint16_t instr)
+{
+}
 
 static void
 memwrite(struct lc3 *lc3, uint16_t addr, uint16_t val)
@@ -192,14 +245,14 @@ main(int argc, char **argv)
 	}
 
 	struct lc3 lc3 = {0};
-	reset(&lc3);
+	uint16_t instr;
 
+	reset(&lc3);
 	/* load rom */
 
 	while (lc3.running) {
-		uint16_t instr = memread(&lc3, lc3.pc++);
-		uint16_t opc = instr >> 12;
-		optable[opc].func(&lc3);
+		instr = memread(&lc3, lc3.pc++);
+		optable[instr >> 12].func(&lc3, instr);
 	}
 
 	return 0;
